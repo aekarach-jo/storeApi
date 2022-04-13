@@ -37,7 +37,7 @@ namespace StoreBK.Controllers
         [HttpPost]
         public Store CreateStore([FromBody] Store store)
         {
-            var data = _storeService.GetAllStore();
+            var data = _storeService.GetAllStoreForApi();
             int number = data.Count();
             store.StoreId = "S-0" + number.ToString();
             store.Status = "Open";
@@ -45,16 +45,16 @@ namespace StoreBK.Controllers
             return store;
         }
 
-        [HttpPut("{storeId}")]
-        public IActionResult EditStore([FromBody] Store store, string storeId)
+        [HttpPut("{id}")]
+        public IActionResult EditStore([FromBody] Store store, string id)
         {
-            var stores = _storeService.GetStoreById(storeId);
+            var stores = _storeService.GetStoreById(id);
             if (stores == null)
             {
                 return NotFound();
             }
-            store.StoreId = storeId;
-            _storeService.EditStore(storeId, store);
+            store.StoreId = id;
+            _storeService.EditStore(id, store);
             return NoContent();
         }
 

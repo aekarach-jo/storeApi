@@ -17,7 +17,7 @@ namespace StoreBK.Services
         }
 
         public List<Store> GetAllStoreForApi() => _stores.Find(store => true).ToList();
-        public List<Store> GetAllStore() => _stores.Find(store => store.Status == "Open").ToList();
+        public List<Store> GetAllStore() => _stores.Find(store => store.Status == "Open").ToList(); 
         public Store GetStoreById(string storeId) => _stores.Find<Store>(store => store.StoreId == storeId).FirstOrDefault();
 
         public Store CreateStore(Store store)
