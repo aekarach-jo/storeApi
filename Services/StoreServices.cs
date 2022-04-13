@@ -12,10 +12,12 @@ namespace StoreBK.Services
         {
             var client = new MongoClient(settings.ConnectionString);
             var database = client.GetDatabase(settings.DatabaseName);
+            var filter = Builders<Store>.Filter.Where(settings=> settings.Status == "Open");
             _stores = database.GetCollection<Store>(settings.StoreCollection);
         }
 
-        public List<Store> GetAllStore() => _stores.Find(store => true).ToList();
+        public List<Store> GetAllStoreForApi() => _stores.Find(store => true).ToList();
+        public List<Store> GetAllStore() => _stores.Find(store => store.Status == "Open").ToList();
         public Store GetStoreById(string storeId) => _stores.Find<Store>(store => store.StoreId == storeId).FirstOrDefault();
 
         public Store CreateStore(Store store)
@@ -24,6 +26,6 @@ namespace StoreBK.Services
             return store;
         }
         public void EditStore(string storeId, Store storeBody) => _stores.ReplaceOne(stores => stores.StoreId == storeId, storeBody);
-        public void DeleteStore(string storeId) => _stores.DeleteOne(stores => stores.StoreId == storeId);
+        public void DeleteStore(string storeId, Store storeBody) => _stores.ReplaceOne(stores => stores.StoreId == storeId, storeBody);
     }
 }

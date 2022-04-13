@@ -10,5 +10,6 @@ namespace StoreBK.Models
         public string StoreName { get; set; }
         public string Description { get; set; }
         public string Telephone { get; set; }
+        public string Status { get; set; }
     }
 }

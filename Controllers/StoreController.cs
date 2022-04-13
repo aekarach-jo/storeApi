@@ -40,6 +40,7 @@ namespace StoreBK.Controllers
             var data = _storeService.GetAllStore();
             int number = data.Count();
             store.StoreId = "S-0" + number.ToString();
+            store.Status = "Open";
             _storeService.CreateStore(store);
             return store;
         }
@@ -57,15 +58,21 @@ namespace StoreBK.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{storeId}")]
+        [HttpGet("{storeId}")]
         public IActionResult DeleteStore(string storeId)
         {
             var stores = _storeService.GetStoreById(storeId);
+            var statusChange = stores.Status;
             if (stores == null)
             {
                 return NotFound();
             }
-            _storeService.DeleteStore(storeId);
+            if (statusChange == "Open")
+            {
+                statusChange = "Close";
+            }
+            stores.Status = statusChange;
+            _storeService.DeleteStore(storeId , stores);
             return NoContent();
         }
 
